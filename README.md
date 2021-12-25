@@ -15,6 +15,7 @@ cd isaac_gym && ./build.sh
 
 4. Convert docker container to singularity sif file
 ```
+cd exports 
 SINGULARITY_NOHTTPS=1 singularity build --sandbox isaac-gym.sif docker-daemon://rslethz/isaac-gym:latest
 ```
 
@@ -25,8 +26,8 @@ sudo singularity exec --nv --writable isaac-gym.sif bash
 
 6. Tar folder without compression (is faster) and push to cluster
 ```
-sudo tar -cvf isaac-gym.tar isaac-gym.sif
-scp isaac-gym.tar jonfrey@euler:/cluster/work/rsl/jonfrey/learn_voxel_nav/containers
+sudo tar -cvf isaac-gym-sif.tar isaac-gym.sif
+scp isaac-gym-sif.tar jonfrey@euler:/cluster/work/rsl/jonfrey/learn_voxel_nav/containers
 ```
 
 7. Schedule job with singularity resource in an interactive shell
@@ -42,7 +43,7 @@ module load gcc/6.3.0 cuda/11.4.2
 
 - Copy to local scratch of the node and unzip on the fly (This is the fastest method)
 ```
-tar -xvf /cluster/work/rsl/jonfrey/learn_voxel_nav/containers/isaac-gym.tar  -C $TMPDIR
+tar -xvf /cluster/work/rsl/jonfrey/learn_voxel_nav/containers/isaac-gym-sif.tar  -C $TMPDIR
 ```
 
 - Start the singularity container
