@@ -22,6 +22,7 @@ docker run -it \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
+    --volume="/home/jonfrey/git/isaac:/home/isaac" \
     --runtime=nvidia \
     --privileged \
     --net=host \

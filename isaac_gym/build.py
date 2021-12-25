@@ -1,8 +1,8 @@
 import os
 
-mode = "bitbucket"
-ssh_key_name = "jonfrey_ws" # name of the ssh key within ~/.ssh/ folder for bitbucket
-isaac_path = "/home/jonfrey/Repos/isaac" # Folder contatining all the repos needed
+mode = "tar"
+ssh_key_name = "jonfrey_ws"  # name of the ssh key within ~/.ssh/ folder for bitbucket
+isaac_path = "/home/jonfrey/Repos/isaac"  # Folder contatining all the repos needed
 
 
 if mode == "tar":
@@ -17,5 +17,5 @@ if mode == "tar":
 
 elif mode == "bitbucket":
     os.system(
-       f"eval $(ssh-agent) && ssh-add ~/.ssh/{ssh_key_name} && export DOCKER_BUILDKIT=1 && docker build --progress=plain --ssh default --build-arg LEGGED_GYM_BRANCH=learn_voxel_nav -f Dockerfile_bitbucket ./ -t rslethz/isaac-gym"
+        f"eval $(ssh-agent) && ssh-add ~/.ssh/{ssh_key_name} && export DOCKER_BUILDKIT=1 && docker build --progress=plain --ssh default --build-arg LEGGED_GYM_BRANCH=learn_voxel_nav -f Dockerfile_bitbucket ./ -t rslethz/isaac-gym"
     )

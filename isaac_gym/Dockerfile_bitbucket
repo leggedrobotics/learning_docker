@@ -20,6 +20,19 @@ RUN apt-get -y update
 RUN apt-get install -y git wget vim
 RUN apt-get -y install python3-pip
 RUN pip3 install torch==1.10.0+cu113 torchvision==0.11.1+cu113 torchaudio==0.10.0+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+RUN pip3 install open3d
+RUN pip3 install vedo
+RUN pip3 install trimesh
+RUN pip3 install cython
+RUN pip3 install scikit-image
+# For open3D (needs the noninterative keywork)
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+
+# Pyembree
+RUN cd /home && git clone https://github.com/scopatz/pyembree.git
+RUN cd /home && wget https://github.com/embree/embree/releases/download/v2.17.7/embree-2.17.7.x86_64.linux.tar.gz
+RUN cd /home && tar -xf embree-2.17.7.x86_64.linux.tar.gz && source embree-2.17.7.x86_64.linux/embree-vars.sh && cd /home/pyembree && pip3 install -e .
+RUN echo "source /home/embree-2.17.7.x86_64.linux/embree-vars.sh" >> /root/.bashrc
 
 # Random number -> always builds.
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache 
@@ -28,7 +41,7 @@ ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 RUN mkdir -p /root/.ssh && ssh-keyscan github.com bitbucket.org 2> /dev/null >> /root/.ssh/known_hosts
 
 COPY build_script_bitbucket.sh /home/build_script_bitbucket.sh 
-RUN sh -c "chmod +x /home/build_script_bitbucket.sh"
+RUN chmod +x /home/build_script_bitbucket.sh
 RUN --mount=type=ssh /home/build_script_bitbucket.sh $LEGGED_GYM_BRANCH 
 
 # Clean up

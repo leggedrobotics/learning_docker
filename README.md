@@ -48,6 +48,6 @@ tar -xvf /cluster/work/rsl/jonfrey/learn_voxel_nav/containers/isaac-gym-sif.tar 
 
 - Start the singularity container
 ```
-singularity exec -B $WORK/learn_voxel_nav:/home -B $HOME/isaac:/home --nv --writable --containall $TMPDIR/isaac-gym.sif bash -c "cd /home/legged_gym && python3 scripts/train.py --headless"
+singularity exec -B $WORK/learn_voxel_nav:/home -B $HOME/isaac:/home/isaac --nv --writable --containall $TMPDIR/isaac-gym.sif bash -c "cd /home/legged_gym && python3 scripts/train.py --headless"
 ```
 Define `--containall` otherwise you will run into problems with possibly loaded modules on the cluster !
