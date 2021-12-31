@@ -23,9 +23,13 @@ docker run -it \
     --env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
     --volume="/home/jonfrey/git/isaac:/home/isaac" \
+    --volume="/home/jonfrey/Datasets/learn_voxel_nav/unity_dataset:/home/work/meshes" \
+    --volume="/home/jonfrey/Results/learn_voxel_nav/:/home/work/results" \
     --runtime=nvidia \
     --privileged \
     --net=host \
     --name="isaac-gym" \
+    --rm \
+    --gpus all \
     rslethz/isaac-gym \
     bash
