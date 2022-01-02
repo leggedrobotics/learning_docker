@@ -22,6 +22,10 @@ RUN pip3 install vedo
 RUN pip3 install trimesh
 RUN pip3 install cython
 RUN pip3 install scikit-image
+
+# Vedo offscreen magic
+RUN apt-get install libgl1-mesa-dev xvfb -y
+
 # For open3D (needs the noninterative keywork)
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 

@@ -16,12 +16,9 @@ XSOCK=/tmp/.X11-unix
 XAUTH=/tmp/.docker.xauth
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | xauth -f $XAUTH nmerge -
 
+
+
 docker run -it \
-    --env="DISPLAY=$DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-    --env="XAUTHORITY=$XAUTH" \
-    --volume="$XAUTH:$XAUTH" \
     --volume="/home/jonfrey/git/isaac:/home/isaac" \
     --volume="/home/jonfrey/Datasets/learn_voxel_nav/unity_dataset:/home/work/meshes" \
     --volume="/home/jonfrey/Results/learn_voxel_nav/:/home/work/results" \
@@ -31,5 +28,14 @@ docker run -it \
     --name="isaac-gym" \
     --rm \
     --gpus all \
+    --env="DISPLAY=$DISPLAY" \
+    --env="QT_X11_NO_MITSHM=1" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --env="XAUTHORITY=$XAUTH" \
+    --volume="$XAUTH:$XAUTH" \
     rslethz/isaac-gym \
     bash
+
+
+
+    
