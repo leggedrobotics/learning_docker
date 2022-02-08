@@ -10,7 +10,7 @@
 2. Install singularity version 3.7.4 (current cluster singularity version, export correct version) ( [Instructions](https://sylabs.io/guides/3.0/user-guide/installation.html) )
 3. Build the container (using `build.sh` script)
 ```
-cd isaac_gym && ./build.sh
+cd isaac_gym && python build.py
 ```
 
 4. Convert docker container to singularity sif file
