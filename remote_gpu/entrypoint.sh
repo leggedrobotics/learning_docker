@@ -16,8 +16,8 @@ case $i in
     ;;
 esac
 done
-echo "Start on port ${SSH_PORT} !"
-echo "$SSH_USERNAME:$SSH_PASSWORD"|chpasswd
+echo "Start on port ${SSH_PORT}!"
+echo "root:$SSH_PASSWORD"|chpasswd
 sudo service ssh restart
 sudo /usr/sbin/sshd -p $SSH_PORT
 bash

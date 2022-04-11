@@ -43,7 +43,7 @@ RUN_COMMAND="docker run \
   -t \
   --gpus all \
   --entrypoint=$ENTRYPOINT \
-  rslethz/remote-gpu SSH_USERNAME=root SSH_PASSWORD=$SSH_PASSWORD SSH_PORT=$SSH_PORT"
+  rslethz/remote-gpu SSH_PASSWORD=$SSH_PASSWORD SSH_PORT=$SSH_PORT"
 
 echo $RUN_COMMAND
 $RUN_COMMAND
