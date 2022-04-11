@@ -41,6 +41,7 @@ RUN_COMMAND="docker run \
   --name=remote-gpu-$STUDENT_NAME \
   -d --restart unless-stopped \
   -t \
+  --gpus all \
   --entrypoint=$ENTRYPOINT \
   rslethz/remote-gpu SSH_USERNAME=root SSH_PASSWORD=$SSH_PASSWORD SSH_PORT=$SSH_PORT"
 
