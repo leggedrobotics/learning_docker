@@ -43,7 +43,6 @@ RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
 # ----------------------------------------------------------------------------
 # Random number -> always builds.
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
-RUN echo "source /opt/conda/bin/activate" >> /root/.bashrc
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
