@@ -1,15 +1,17 @@
 # Docker Learning Containers:
 
-## Remote GPU Container:
+## Remote Container:
+
+replace `<type>` with `gpu` or `ros`
 
 1. Installation: 
 ```shell
-cd remote_gpu && ./bin/build.sh 
+cd remote_<type> && ./bin/build.sh 
 ```
 
 2. Running the Container:
 ```shell
-cd remote_gpu && ./bin/run.sh --password=docker --port=12345 --name=good_student --home=~/RSL
+cd remote_<type> && ./bin/run.sh --password=docker --port=12345 --name=good_student --home=/some_path/RSL
 ```
 
 - `--password`:   Password to login using ssh
