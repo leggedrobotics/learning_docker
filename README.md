@@ -22,7 +22,7 @@ cd remote_<type> && ./bin/run.sh --password=docker --port=12355 --name=good_stud
 
 ## Linuxserver Container:
 Allows to create a virtual desktop. Start this container on the powerfull host machine.
-
+We assume you are able to run the Nvidia Docker Container. If not follow this guide: <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html>
 
 Big thanks to <https://docs.linuxserver.io/images/docker-rdesktop>
 
