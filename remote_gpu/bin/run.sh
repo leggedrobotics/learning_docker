@@ -2,7 +2,7 @@
 SSH_PORT="12346"
 STUDENT_NAME="test"
 SSH_PASSWORD="docker"
-HOME_FOLDER_DIR="/home/jonfrey/RSL"
+HOME_FOLDER_DIR="$HOME/RSL"
 ENTRYPOINT="/entrypoint.sh"
 
 for i in "$@"
@@ -37,10 +37,11 @@ RUN_COMMAND="docker run \
   --cap-add=sys_nice \
   --net=host \
   --expose $SSH_PORT \
-  -v $MOUNT_VOLUME:/home/ \
+  -v $MOUNT_VOLUME:/media/ \
   --name=remote-gpu-$STUDENT_NAME \
   -d --restart unless-stopped \
   -t \
+  --shm-size=4g \
   --gpus all \
   --entrypoint=$ENTRYPOINT \
   rslethz/remote-gpu SSH_PASSWORD=$SSH_PASSWORD SSH_PORT=$SSH_PORT"
