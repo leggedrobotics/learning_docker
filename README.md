@@ -22,7 +22,9 @@ cd remote_<type> && ./bin/run.sh --password=docker --port=12355 --name=good_stud
 
 ## Linuxserver Container:
 Allows to create a virtual desktop. Start this container on the powerfull host machine.
-Big thanks to ![https://docs.linuxserver.io/images/docker-rdesktop](https://docs.linuxserver.io/images/docker-rdesktop)
+
+
+Big thanks to ![RDesktop](https://docs.linuxserver.io/images/docker-rdesktop)
 
 1. Installation: 
 ```shell
