@@ -13,14 +13,16 @@
 #==
 # Foundation
 #==
+FROM ubuntu:focal as base 
 
-ARG UBUNTU_VERSION=20.04
-FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-devel
+ARG PYTHON_VERSION=3.11.2
+ARG CUDA_VERSION=11.7
 ARG SSH_USERNAME=root
 ARG SSH_PASSWORD=docker
-ARG SSH_PORT=12346
+ARG SSH_PORT=22
 
 LABEL maintainer="Jonas Frey" mail="jonfrey@ethz.ch"
+LABEL pytorch_version=2.0+
 
 SHELL ["/bin/bash", "--login", "-c"]
 ENV TERM=xterm-256color
@@ -36,22 +38,24 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 
+COPY bashrc /root/.bashrc
+RUN ls -la /root/
+
 #==
 # System APT base dependencies and utilities
 #==
 COPY base.sh /home/base.sh
+COPY env.sh /home/env.sh
 RUN chmod +x /home/base.sh
-RUN /home/base.sh && rm /home/base.sh
+RUN chmod +x /home/env.sh
+RUN /home/base.sh -py=${PYTHON_VERSION} -cuda=${CUDA_VERSION} && rm /home/base.sh
 
-RUN apt-get update && apt-get install -y openssh-server
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
 
-# ----------------------------------------------------------------------------
-# Random number -> always builds.
-ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
-RUN echo "source /opt/conda/bin/activate" >> /root/.bashrc
+# Add this in your Dockerfile
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    mkdir /var/run/sshd && \
+    echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh

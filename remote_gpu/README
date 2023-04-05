@@ -1,0 +1,12 @@
+# Build
+Select a python and cuda version compatible with pytorch 2.*:
+```
+./bin/build.sh --py=3.11.2 --cuda=11.7
+```
+
+# Run 
+```
+./bin/run.sh --name="your_student" --p=12345 --home=<path>
+```
+
+

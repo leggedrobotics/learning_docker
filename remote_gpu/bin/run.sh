@@ -1,9 +1,10 @@
 #!/bin/bash
-SSH_PORT="12346"
+SSH_PORT="11111"
 STUDENT_NAME="test"
 SSH_PASSWORD="docker"
 HOME_FOLDER_DIR="$HOME/RSL"
 ENTRYPOINT="/entrypoint.sh"
+TAG="3.11.2"
 
 for i in "$@"
 do
@@ -24,27 +25,35 @@ case $i in
     HOME_FOLDER_DIR=${i#*=}
     shift
     ;;
+  --tag=*)
+    TAG=${i#*=}
+    shift
+    ;;
 esac
 done
 
 MOUNT_VOLUME=$HOME_FOLDER_DIR/$STUDENT_NAME
-mkdir -p $MOUNT_VOLUME
-
-echo $MOUNT_VOLUME
+sudo mkdir -p $MOUNT_VOLUME
+# print ssh port 
+echo "SSH_PORT: $SSH_PORT"
 
 RUN_COMMAND="docker run \
   --ulimit rtprio=99 \
   --cap-add=sys_nice \
   --net=host \
   --expose $SSH_PORT \
-  -v $MOUNT_VOLUME:/media/ \
+  -p $SSH_PORT:$SSH_PORT \
+  -v $MOUNT_VOLUME:/media \
   --name=remote-gpu-$STUDENT_NAME \
   -d --restart unless-stopped \
   -t \
   --shm-size=4g \
   --gpus all \
+  -e SSH_PASSWORD=$SSH_PASSWORD \
+  -e SSH_PORT=$SSH_PORT \
   --entrypoint=$ENTRYPOINT \
-  rslethz/remote-gpu SSH_PASSWORD=$SSH_PASSWORD SSH_PORT=$SSH_PORT"
+    rslethz/remote-gpu:$TAG"
+
 
 echo $RUN_COMMAND
 $RUN_COMMAND

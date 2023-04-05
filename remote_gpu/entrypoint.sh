@@ -1,23 +1,12 @@
 #!/bin/bash
+echo $SSH_PORT
 
-SSH_PASSWORD="docker"
-SSH_PORT="12345"
+# set the password SSH_PASSWORD
+echo "root:$SSH_PASSWORD" | chpasswd
 
-for i in "$@"
-do
-case $i in
-  SSH_PASSWORD=*)
-    SSH_PASSWORD=${i#*=}
-    shift
-    ;;
-  SSH_PORT=*)
-    SSH_PORT=${i#*=}
-    shift
-    ;;
-esac
-done
-echo "Start on port ${SSH_PORT}!"
-echo "root:$SSH_PASSWORD"|chpasswd
-sudo service ssh restart
-sudo /usr/sbin/sshd -p $SSH_PORT
-bash
+echo SSH_PASSWORD: $SSH_PASSWORD
+# show files present in the home directory
+ls -la /root/
+
+# Start SSH server at the port SSH_PORT
+exec /usr/sbin/sshd -D -p $SSH_PORT
