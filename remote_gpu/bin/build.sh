@@ -1,8 +1,7 @@
 #!/bin/bash
 
 PYTHON_VERSION="3.11.2"
-CUDA_VERSION="11.7"
-BASE="ubuntu:focal"
+CUDA_VERSION="11.8"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do

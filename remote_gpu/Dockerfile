@@ -13,14 +13,14 @@
 #==
 # Foundation
 #==
-ARG BASE=ubuntu:focal
-FROM $BASE as base
 
 ARG PYTHON_VERSION=3.11.2
-ARG CUDA_VERSION=11.7
+ARG CUDA_VERSION=11.8
 ARG SSH_USERNAME=root
 ARG SSH_PASSWORD=docker
 ARG SSH_PORT=22
+
+FROM nvidia/cuda:${CUDA_VERSION}.0-runtime-ubuntu20.04 as base
 
 LABEL maintainer="Jonas Frey" mail="jonfrey@ethz.ch"
 LABEL pytorch_version=2.0+
