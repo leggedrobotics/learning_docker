@@ -2,6 +2,7 @@
 
 PYTHON_VERSION="3.11.2"
 CUDA_VERSION="11.7"
+BASE="ubuntu:focal"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -10,6 +11,11 @@ while [[ $# -gt 0 ]]; do
     case $key in
         --py)
         PYTHON_VERSION="$2"
+        shift
+        shift
+        ;;
+        --base)
+        BASE="$2"
         shift
         shift
         ;;
@@ -38,6 +44,9 @@ if [[ -n "$PYTHON_VERSION" ]]; then
 fi
 if [[ -n "$CUDA_VERSION" ]]; then
     DOCKER_BUILD_ARGS+=( "--build-arg CUDA_VERSION=$CUDA_VERSION" )
+fi
+if [[ -n "$BASE" ]]; then
+    DOCKER_BUILD_ARGS+=( "--build-arg BASE=$BASE" )
 fi
 
 docker build --progress=plain --ssh default -t "rslethz/remote-gpu:$PYTHON_VERSION" `${DOCKER_BUILD_ARGS[@]}` -f "$PKGROOT/Dockerfile" "$PKGROOT/"

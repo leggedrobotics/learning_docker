@@ -13,7 +13,8 @@
 #==
 # Foundation
 #==
-FROM ubuntu:focal as base 
+ARG BASE=ubuntu:focal
+FROM $BASE as base
 
 ARG PYTHON_VERSION=3.11.2
 ARG CUDA_VERSION=11.7
@@ -37,9 +38,10 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
+USER root
+ENV HOME /root
 
 COPY bashrc /root/.bashrc
-RUN ls -la /root/
 
 #==
 # System APT base dependencies and utilities
@@ -56,8 +58,3 @@ RUN apt-get update && \
     apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \
     echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
-
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-CMD []
