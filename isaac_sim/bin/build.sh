@@ -48,6 +48,6 @@ if [[ -n "$BASE" ]]; then
     DOCKER_BUILD_ARGS+=( "--build-arg BASE=$BASE" )
 fi
 
-docker build --progress=plain --ssh default -t "rslethz/remote-gpu:$PYTHON_VERSION" `${DOCKER_BUILD_ARGS[@]}` -f "$PKGROOT/Dockerfile" "$PKGROOT/"
+docker build --progress=plain --ssh default -t "rslethz/isaac-sim:$PYTHON_VERSION" `${DOCKER_BUILD_ARGS[@]}` -f "$PKGROOT/Dockerfile" "$PKGROOT/"
 
 # EOF

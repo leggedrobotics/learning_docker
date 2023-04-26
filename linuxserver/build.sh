@@ -1,7 +1,9 @@
 #!/bin/bash
 
 PYTHON_VERSION="3.11.2"
-CUDA_VERSION="11.8"
+CUDA_VERSION="11-8"
+BASE="linuxserver/rdesktop:mate-focal"
+
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -39,15 +41,15 @@ echo PKGROOT: $PKGROOT
 export DOCKER_BUILDKIT=1
 DOCKER_BUILD_ARGS=()
 if [[ -n "$PYTHON_VERSION" ]]; then
-    DOCKER_BUILD_ARGS+=( "--build-arg PYTHON_VERSION=$PYTHON_VERSION" )
+    DOCKER_BUILD_ARGS+=( "--build-arg=PYTHON_VERSION=$PYTHON_VERSION" )
 fi
 if [[ -n "$CUDA_VERSION" ]]; then
-    DOCKER_BUILD_ARGS+=( "--build-arg CUDA_VERSION=$CUDA_VERSION" )
+    DOCKER_BUILD_ARGS+=( "--build-arg=CUDA_VERSION=$CUDA_VERSION" )
 fi
 if [[ -n "$BASE" ]]; then
-    DOCKER_BUILD_ARGS+=( "--build-arg BASE=$BASE" )
+    DOCKER_BUILD_ARGS+=( "--build-arg=BASE=$BASE" )
 fi
 
-docker build --progress=plain --ssh default -t "rslethz/remote-gpu:$PYTHON_VERSION" `${DOCKER_BUILD_ARGS[@]}` -f "$PKGROOT/Dockerfile" "$PKGROOT/"
+docker buildx build --progress=plain --ssh default -t "rslethz/linux_server:$PYTHON_VERSION" "${DOCKER_BUILD_ARGS[@]}" -f "$PKGROOT/linuxserver/Dockerfile" "$PKGROOT/linuxserver/"
 
 # EOF

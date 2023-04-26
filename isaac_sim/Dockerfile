@@ -20,9 +20,8 @@ ARG SSH_USERNAME=root
 ARG SSH_PASSWORD=docker
 ARG SSH_PORT=22
 
-FROM nvidia/cuda:${CUDA_VERSION}.0-runtime-ubuntu20.04 as base
+FROM nvcr.io/nvidia/isaac-sim:2022.2.1 as base
 
-LABEL maintainer="Jonas Frey" mail="jonfrey@ethz.ch"
 LABEL pytorch_version=2.0+
 
 SHELL ["/bin/bash", "--login", "-c"]
@@ -35,8 +34,6 @@ ENV DEBIAN_frontend noninteractive
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
     ${NVIDIA_VISIBLE_DEVICES:-all}
-ENV NVIDIA_DRIVER_CAPABILITIES \
-    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
 USER root
 ENV HOME /root
@@ -46,11 +43,17 @@ COPY bashrc /root/.bashrc
 #==
 # System APT base dependencies and utilities
 #==
-COPY base.sh /home/base.sh
-COPY env.sh /home/env.sh
-RUN chmod +x /home/base.sh
-RUN chmod +x /home/env.sh
-RUN /home/base.sh -py=${PYTHON_VERSION} -cuda=${CUDA_VERSION} && rm /home/base.sh
+COPY base.sh $HOME/base.sh
+COPY python.sh $HOME/python.sh
+COPY ros.sh $HOME/ros.sh
+COPY env.sh $HOME/env.sh
+RUN chmod +x $HOME/base.sh
+RUN chmod +x $HOME/ros.sh
+RUN chmod +x $HOME/python.sh
+RUN chmod +x $HOME/env.sh
+RUN $HOME/base.sh && rm $HOME/base.sh\
+    && $HOME/ros.sh && rm $HOME/ros.sh
+RUN $HOME/python.sh -py=${PYTHON_VERSION} -cuda=${CUDA_VERSION} && rm $HOME/python.sh
 
 
 # Add this in your Dockerfile
@@ -58,3 +61,8 @@ RUN apt-get update && \
     apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \
     echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD []

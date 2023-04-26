@@ -2,7 +2,7 @@
 echo $SSH_PORT
 
 # set the password SSH_PASSWORD
-echo "$SSH_USERNAME:$SSH_PASSWORD" | chpasswd
+echo "root:$SSH_PASSWORD" | chpasswd
 
 echo SSH_PASSWORD: $SSH_PASSWORD
 

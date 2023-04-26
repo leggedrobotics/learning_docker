@@ -20,7 +20,7 @@ ARG SSH_USERNAME=root
 ARG SSH_PASSWORD=docker
 ARG SSH_PORT=22
 
-FROM nvidia/cuda:${CUDA_VERSION}.0-runtime-ubuntu20.04 as base
+FROM linuxserver/rdesktop:mate-focal as base
 
 LABEL maintainer="Jonas Frey" mail="jonfrey@ethz.ch"
 LABEL pytorch_version=2.0+
@@ -52,9 +52,14 @@ RUN chmod +x /home/base.sh
 RUN chmod +x /home/env.sh
 RUN /home/base.sh -py=${PYTHON_VERSION} -cuda=${CUDA_VERSION} && rm /home/base.sh
 
+RUN apt-get update && apt-get install -y fuse
 
 # Add this in your Dockerfile
 RUN apt-get update && \
     apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \
     echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+
+# add entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
